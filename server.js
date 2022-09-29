@@ -114,6 +114,7 @@ function addDpt() {
 }
 
 function addRole() {
+  //Trying to figure out a way to pass the options I want as the choices: in inquirer
   // let resultsToChoices;
   // db.query('SELECT department.department_name FROM department', (err, results) => {
   //   if (err) {
@@ -142,12 +143,44 @@ function addRole() {
     }
   ])
     .then((answers) => {
-      db.query(`INSERT INTO employee_role (title, salary, department_id)
-    VALUES  ('${answers.newRoleTitle}', '${answers.newRoleSalary}', '${answers.newRoleDpt}');`, (err, results) => {
-        if (err) {
-          console.log(err);
+      let newDptId;
+      switch (answers.choices) {
+        case "Sales":
+          db.query(`INSERT INTO employee_role (title, salary, department_id)
+          VALUES  ('${answers.newRoleTitle}', '${answers.newRoleSalary}', 1);`, (err, results) => {
+              if (err) {
+                console.log(err);
+              }
+            });
+          break;
+
+        case "Engineering":
+          db.query(`INSERT INTO employee_role (title, salary, department_id)
+          VALUES  ('${answers.newRoleTitle}', '${answers.newRoleSalary}', 2);`, (err, results) => {
+              if (err) {
+                console.log(err);
+              }
+            });
+          break;
+          
+        case "Finance":
+          db.query(`INSERT INTO employee_role (title, salary, department_id)
+          VALUES  ('${answers.newRoleTitle}', '${answers.newRoleSalary}', 3);`, (err, results) => {
+              if (err) {
+                console.log(err);
+              }
+            });
+          break;
+        
+        case "Legal":
+          db.query(`INSERT INTO employee_role (title, salary, department_id)
+          VALUES  ('${answers.newRoleTitle}', '${answers.newRoleSalary}', 4);`, (err, results) => {
+              if (err) {
+                console.log(err);
+              }
+            });
+          break;
         }
-      });
       db.query('SELECT employee_role.title , employee_role.salary , department.department_name FROM employee_role , department WHERE employee_role.department_id = department.id;', (err, results) => {
         if (err) {
           console.log(err);
@@ -183,6 +216,149 @@ function addEmp() {
       choices: ['Bry', 'Ely'],
       message: `Who is the new employee's manager?`,
       name: 'newEmpManager'
+    }
+  ])
+    .then((answers) => {
+      const first = answers.newEmpFirst;
+      const last = answers.newEmpLast;
+      let manager = 0;
+      switch (answers.newEmpManager) {
+        case 'Bry':
+          manager = 1;
+          break;
+        case 'Ely':
+          manager = 2;
+          break;
+      }
+      switch (answers.newEmpRole) {
+        case 'Salesperson':
+          db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES  ('${first}', '${last}', 1, '${manager}')`, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+          db.query('SELECT B.first_name , B.last_name, A.first_name AS manager , employee_role.title , employee_role.salary , department.department_name FROM employee A, employee B, employee_role , department WHERE A.id = B.manager_id AND B.role_id = employee_role.id AND employee_role.department_id = department.id;', (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log('Please see employees below')
+            console.table(results);
+            accessDb()
+          });
+          break;
+
+          case 'Lead Engineer':
+          db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES  ('${first}', '${last}', 2, '${manager}')`, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+          db.query('SELECT B.first_name , B.last_name, A.first_name AS manager , employee_role.title , employee_role.salary , department.department_name FROM employee A, employee B, employee_role , department WHERE A.id = B.manager_id AND B.role_id = employee_role.id AND employee_role.department_id = department.id;', (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log('Please see employees below')
+            console.table(results);
+            accessDb()
+          });
+          break;
+
+          case 'Software Engineer':
+          db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES  ('${first}', '${last}', 3, '${manager}')`, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+          db.query('SELECT B.first_name , B.last_name, A.first_name AS manager , employee_role.title , employee_role.salary , department.department_name FROM employee A, employee B, employee_role , department WHERE A.id = B.manager_id AND B.role_id = employee_role.id AND employee_role.department_id = department.id;', (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log('Please see employees below')
+            console.table(results);
+            accessDb()
+          });
+          break;
+
+          case 'Account Manager':
+          db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES  ('${first}', '${last}', 4, '${manager}')`, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+          db.query('SELECT B.first_name , B.last_name, A.first_name AS manager , employee_role.title , employee_role.salary , department.department_name FROM employee A, employee B, employee_role , department WHERE A.id = B.manager_id AND B.role_id = employee_role.id AND employee_role.department_id = department.id;', (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log('Please see employees below')
+            console.table(results);
+            accessDb()
+          });
+          break;
+          
+          case 'Accountant':
+          db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES  ('${first}', '${last}', 5, '${manager}')`, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+          db.query('SELECT B.first_name , B.last_name, A.first_name AS manager , employee_role.title , employee_role.salary , department.department_name FROM employee A, employee B, employee_role , department WHERE A.id = B.manager_id AND B.role_id = employee_role.id AND employee_role.department_id = department.id;', (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log('Please see employees below')
+            console.table(results);
+            accessDb()
+          });
+          break;
+
+          case 'Legal Team Lead':
+          db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES  ('${first}', '${last}', 6, '${manager}')`, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+          db.query('SELECT B.first_name , B.last_name, A.first_name AS manager , employee_role.title , employee_role.salary , department.department_name FROM employee A, employee B, employee_role , department WHERE A.id = B.manager_id AND B.role_id = employee_role.id AND employee_role.department_id = department.id;', (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log('Please see employees below')
+            console.table(results);
+            accessDb()
+          });
+          break;
+
+          case 'Lawyer':
+          db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES  ('${first}', '${last}', 7, '${manager}')`, (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+          db.query('SELECT B.first_name , B.last_name, A.first_name AS manager , employee_role.title , employee_role.salary , department.department_name FROM employee A, employee B, employee_role , department WHERE A.id = B.manager_id AND B.role_id = employee_role.id AND employee_role.department_id = department.id;', (err, results) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log('Please see employees below')
+            console.table(results);
+            accessDb()
+          });
+          break;
+      }
+    })
+}
+
+function updateEmp() {
+  inquirer.prompt([
+    {
+      type: 'input',
+      message: `What is the employee's new role?`,
+      name: 'newEmpRole'
     }
   ])
     .then((answers) => {
